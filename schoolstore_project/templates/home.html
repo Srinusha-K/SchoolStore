@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+<div class="row">
+
+<div class="col-md-4" >
+<br>
+<button onclick="showForm()" class="btn btn-info btn-lg">User</button><br><br>
+<form method="post"  id="formElement" style="display: none;" class="p-3 shadow" id="formElement" data-courses-url="{% url 'ajax_load_courses' %}" >
+    {% csrf_token %}
+    <center><h4 style="color: mediumblue">FORM</h4></center>
+
+    <div class="col-md-6">
+        {{ form.as_p }}
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-success"><br><br>
+    <button class="btn btn-outline-primary">
+        <a href="/">Logout</a>
+    </button>
+
+</form>
+{% for msg in messages %}
+    <h4>{{ msg }}</h4>
+    <h4><a href="/">Home</a></h4>
+{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_department").change(function () {
+        const url = $("#formElement").attr("data-courses-url");  // get the url of the `load_courses` view
+        const departmentId = $(this).val();  // get the selected department ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-courses/ )
+            data: {
+                'department_id': departmentId       // add the department id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_courses` view function
+                //$("#id_courses").html(data);  // replace the contents of the courses input with the data that came from the server
+
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (courses) {
+                    html_data += `<option value="${courses.id}">${courses.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_courses").html(html_data);
+
+
+            }
+        });
+
+    });
+
+    function showForm() {
+        document.getElementById('formElement').style.display = 'block';
+    }
+</script>
+
+</div>
+</div>
+</div>
+
+{% endblock %}

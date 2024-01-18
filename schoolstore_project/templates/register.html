@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+<center>
+<div class="container">
+    <br>
+    <div class="col-lg-3">
+    <form action="register" method="POST" class="p-3 shadow">
+        {% csrf_token %}
+        <h4 style="color: mediumblue">REGISTRATION</h4>
+        <div class="input-group input-group-lg">
+            <input type="text" name="username" placeholder="Enter user name" size="25px" class="form-control">
+        </div><br>
+        <div class="input-group input-group-lg">
+            <input type="password" name="password" placeholder="Enter your password" size="25px" class="form-control">
+        </div><br>
+        <div class="input-group input-group-lg">
+            <input type="password" name="password1" placeholder="Confirm your password" size="25px" class="form-control">
+        </div><br>
+        <input type="submit" class="btn btn-success btn-lg">
+    </form>
+    {% for msg in messages %}
+        <h2>{{ msg }}</h2>
+    {% endfor %}
+</center>
+{% endblock %}
